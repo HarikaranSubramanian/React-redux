@@ -1,26 +1,26 @@
+
+
 import { createSlice } from "@reduxjs/toolkit";
 
 export const cardSlice = createSlice({
   name: "Card",
   initialState: {
-    value: 0,
+    quantities: {}, // Use an object to store quantities for each card
   },
-
   reducers: {
     savealldata: (state, action) => {
       return action.payload;
     },
-
     increment: (state, action) => {
       let { id } = action.payload;
-
-      state.value += 1;
+      // Increment the quantity for the specific card id
+      state.quantities[id] = (state.quantities[id] || 0) + 1;
     },
-    decrement: (state) => {
-      if (state.value <= 0) {
-        state.value = 0;
-      } else {
-        state.value -= 1;
+    decrement: (state, action) => {
+      let { id } = action.payload;
+      // Decrement the quantity for the specific card id
+      if (state.quantities[id] && state.quantities[id] > 0) {
+        state.quantities[id] -= 1;
       }
     },
   },

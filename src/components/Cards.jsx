@@ -1,13 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import { increment, decrement } from "../redux/CartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { DataContext } from "../contextData/UserContext";
+
 function Cards() {
   let { data } = useContext(DataContext);
-
   let dispatch = useDispatch();
-  let total = useSelector((state) => state.Card.value);
+  let quantities = useSelector((state) => state.Card.quantities);
+
   let increase = (id) => {
     dispatch(increment({ id }));
   };
@@ -20,11 +22,8 @@ function Cards() {
     <>
       <div className="container ">
         {data.map((e, i) => {
-          //rounding decount values
           const discount = Math.round(e.price * (e.discountPercentage / 100));
-          //Setting the total of the product
-
-          //function for increasing the Total
+          const total = quantities[e.id] || 0;
 
           return (
             <div
@@ -33,7 +32,6 @@ function Cards() {
               key={i}
             >
               <div className="row g-0">
-                {/* Image of the product */}
                 <div className="col-md-3 image">
                   <img
                     src={e.image}
@@ -41,8 +39,6 @@ function Cards() {
                     alt="product image..."
                   />
                 </div>
-
-                {/* product info */}
                 <div className="col-md-9">
                   <div className="cardBody px-3">
                     <div className="top">
@@ -59,9 +55,7 @@ function Cards() {
                     </div>
                     <p className="card-value">{e.description}</p>
                     <div className="button d-flex justify-content-between align-item-center">
-                                  <p className="card-value">Rating:{e.rating}/5</p>
-                                  
-                      {/* buttons for increasing the  */}
+                      <p className="card-value">Rating:{e.rating}/5</p>
                       <div className="button">
                         <Button
                           variant="outline-danger"
@@ -78,7 +72,6 @@ function Cards() {
                         </Button>
                       </div>
                     </div>
-
                     <div className="bottom">
                       <div className="d-flex justify-content-between align-items-center">
                         Original Price for 1 item:
